@@ -1,0 +1,20 @@
+FROM openjdk:8-buster
+
+ENV SPARK_HOME=/spark-2.4.7-bin-without-hadoop
+ENV HADOOP_HOME=/hadoop-3.2.0
+ENV PATH=${HADOOP_HOME}/bin:${PATH}
+ENV SPARK_DIST_CLASSPATH=${HADOOP_HOME}/etc/hadoop:${HADOOP_HOME}/share/hadoop/common/lib/*:${HADOOP_HOME}/share/hadoop/common/*:${HADOOP_HOME}/share/hadoop/hdfs:${HADOOP_HOME}/share/hadoop/hdfs/lib/*:${HADOOP_HOME}/share/hadoop/hdfs/*:${HADOOP_HOME}/share/hadoop/mapreduce/lib/*:${HADOOP_HOME}/share/hadoop/mapreduce/*:${HADOOP_HOME}/share/hadoop/yarn:${HADOOP_HOME}/share/hadoop/yarn/lib/*:${HADOOP_HOME}/share/hadoop/yarn/*:${HADOOP_HOME}/share/hadoop/tools/lib/*
+ENV PATH=${SPARK_HOME}/bin:${PATH}
+
+RUN  apt-get update \
+    && apt-get install -y wget \
+    && rm -rf /var/lib/apt/lists/*
+
+
+RUN wget https://archive.apache.org/dist/spark/spark-2.4.7/spark-2.4.7-bin-without-hadoop.tgz \
+    && wget https://archive.apache.org/dist/hadoop/common/hadoop-3.2.0/hadoop-3.2.0.tar.gz
+
+RUN tar -xzvf ./spark-2.4.7-bin-without-hadoop.tgz
+RUN tar -xzvf ./hadoop-3.2.0.tar.gz
+
+CMD [ "bash" ]
